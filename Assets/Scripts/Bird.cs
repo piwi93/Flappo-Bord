@@ -21,6 +21,7 @@ public class Bird : MonoBehaviour {
 	AudioSource bloob;
 	AudioSource peow;
 	AudioSource pipe;
+	AudioSource boup;
 
 
 	//Use this for initialization
@@ -37,6 +38,7 @@ public class Bird : MonoBehaviour {
 	    bloob = allMyAudioSources[0];
 	    peow = allMyAudioSources[1];
 		pipe = allMyAudioSources[2];
+		boup = allMyAudioSources[3];
 
 	}
 
@@ -77,7 +79,7 @@ public class Bird : MonoBehaviour {
 			StartCoroutine(powerUpTimer());
 		}
 
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)){
             flap = true;
 
             //bloob sound
@@ -115,20 +117,48 @@ public class Bird : MonoBehaviour {
 
 	//When Collide
 	void OnCollisionEnter2D(Collision2D Collission){
-		//bloob sound
-        peow.Play();
-	
-	    //Restart Current Scene
-	    //Application.LoadLevel(Application.loadedLevel);
+
+		//Collide with the sky
+		if(Collission.gameObject.name == "Sky"){
+			//boup sound
+			boup.Play ();
+
+			//falling
+			Vector3 falling = new Vector3(0,3.0F,0);
+			speed.y = -falling.y;
+		}
+
+		//Or Im not unstopable and I collide with the rest
+		else if( birdState != states[1] ){
+			//bloob sound
+			peow.Play();
+
+			//Restart Current Scene (Pause?)
+			Application.LoadLevel(Application.loadedLevel);
+		}
+
+		//Else Im unstopable bitch, but better if I dont collide with the ground 
+		else{
+			if(Collission.gameObject.name == "Ground"){
+
+				//bloob sound
+				peow.Play();
+
+				//Restart Current Scene (Pause?)
+				Application.LoadLevel(Application.loadedLevel);
+			}
+		}
+
 	}
 
 
 	//Used in Unstopable Power Up
 	IEnumerator waitGrow(){
-
-		powerupPosition.x = 1.5F;
+		
         yield return new WaitForSeconds(0.200F);
 
+		//Change position & scale
+		powerupPosition.x = 1.5F;
 		transform.position += powerupPosition;
         transform.localScale = new Vector3(32, 32, 1);
 
