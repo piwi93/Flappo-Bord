@@ -6,7 +6,7 @@ public class Tubes : MonoBehaviour {
     Vector3 vSpeed;
     Vector3 vDistance;
     bool hasPlayed = false;
-    
+
     public float speed;
     public float distance;
 
@@ -47,6 +47,28 @@ public class Tubes : MonoBehaviour {
 		if( (this.transform.position.x <= -5f) && (hasPlayed == false) ){
 			GetComponent<AudioSource>().Play();
 			hasPlayed = true;
+        }
+
+    }
+
+
+	//Destroy tube anim
+	IEnumerator detroyTube(){
+		GetComponent<Animation>().Play("TubesGone");
+		yield return new WaitForSeconds(1F);
+		Destroy(gameObject);
+	}
+
+
+    //When Collide
+    void OnCollisionEnter2D(Collision2D Collission){
+
+		//Get publics components of Bird.cs script
+		Bird bird = Collission.gameObject.GetComponent<Bird>();
+
+		//Destroy when bird is unstopable
+		if(bird.birdState == "unstopable"){
+			StartCoroutine(detroyTube());
         }
 
     }
