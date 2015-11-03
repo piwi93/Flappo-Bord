@@ -15,14 +15,14 @@ public class Bird : MonoBehaviour {
 	bool flap = false;
 	bool hasPlayed = false;
 
-	string[] states = {"normal", "unstopable", "tiny", "killer"};
+	string[] states = {"normal", "unstopable", "tiny", "rlauncher"};
 	Vector3 xPosition = Vector3.zero;
 
 	AudioSource bloob;
 	AudioSource peow;
 	AudioSource pipe;
 	AudioSource boup;
-
+	Animator anim;
 
 
 	//Set Bird to Normal
@@ -30,6 +30,9 @@ public class Bird : MonoBehaviour {
 		
 		//Set normal state
 		birdState = states[0];
+
+		//Set normal animation
+		anim.SetBool("RL", false);
 		
 		//Set scale
 		transform.localScale = new Vector3(6.064453F, 7.314585F, 1F);
@@ -60,6 +63,8 @@ public class Bird : MonoBehaviour {
 	    peow = allMyAudioSources[1];
 		pipe = allMyAudioSources[2];
 		boup = allMyAudioSources[3];
+
+		anim = GetComponent<Animator>();
 
 		//Set bird
 		setBirdToNormal();
@@ -213,6 +218,19 @@ public class Bird : MonoBehaviour {
 			vForce.y = -14;
 			vJump.y = 5;
 			maxSpeed = 5;
+
+			StartCoroutine(powerUpTimer());
+		}
+
+		//Rocket Launcher Power Up
+		if(Collider.gameObject.name == "RLauncherPowerUp(Clone)"){
+
+			//Animator anim = GetComponent<Animator>();
+			anim.SetBool("RL", true);
+
+			//Set rlauncher state to bird
+			birdState = states[2];
+			hasPlayed = false;
 
 			StartCoroutine(powerUpTimer());
 		}
