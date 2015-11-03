@@ -12,6 +12,11 @@ public class PowerUp : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		vSpeed.x = speed;
+
+		//Set a random range of 'y' for respawn
+		Vector3 newRespawn = this.transform.position;
+		newRespawn.y = Random.Range (1.3f, 4.8f);
+		this.transform.position = newRespawn;
 	}
 	
 
@@ -38,4 +43,5 @@ public class PowerUp : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
-}
+
+} //End

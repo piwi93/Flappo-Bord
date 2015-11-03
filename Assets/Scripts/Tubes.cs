@@ -4,23 +4,29 @@ using System.Collections;
 public class Tubes : MonoBehaviour {
 
     Vector3 vSpeed;
-    Vector3 vDistance;
     bool hasPlayed = false;
 
     public float speed;
-    public float distance;
 
 
 	// Use this for initialization
 	void Start(){
 		vSpeed.x = speed;
-		vDistance.x = distance;
+
+		hasPlayed = false;
+
+		//Set a random range of 'y' for respawn
+		Vector3 newRespawn = this.transform.position;
+		newRespawn.y = Random.Range (1.3f, 5f);
+		this.transform.position = newRespawn;
 	}
-	
+
+
 	// Update is called once per frame
 	void Update(){
 		scrollTubes();
 	}
+
 
 	private void scrollTubes(){
 
@@ -29,18 +35,7 @@ public class Tubes : MonoBehaviour {
  
         //Out of camera position
         if (this.transform.position.x <= -8.22f){
-
-        	//New respawn postion 'x'
-            Vector3 newRespawn = this.transform.position + vDistance;
-            
-            //Set a random range of 'y' for respawn
-            newRespawn.y = Random.Range (1.3f, 5f);
-            
-            //Move the old tube to the respawn area
-            this.transform.position = newRespawn;
-
-            //Reset sfx flag
-            hasPlayed = false;
+			Destroy(gameObject);
         }
 
         //Play audio
@@ -72,4 +67,5 @@ public class Tubes : MonoBehaviour {
         }
 
     }
-}
+
+} //End
