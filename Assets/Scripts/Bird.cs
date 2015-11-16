@@ -9,7 +9,8 @@ public class Bird : MonoBehaviour {
 
 	public float force;
 	public float jump;
-	public float maxSpeed;
+	public float maxSpeedUp;
+	public float maxSpeedDown;
 	public string birdState;
 
 	bool flap = false;
@@ -38,9 +39,10 @@ public class Bird : MonoBehaviour {
 		transform.localScale = new Vector3(6.064453F, 7.314585F, 1F);
 		
 		//Set mass values
-		vForce.y = -18;
+		vForce.y = -19;
 		vJump.y = 7;
-		maxSpeed = 7;
+		maxSpeedUp = 5.5f;
+		maxSpeedDown = 8.2f;
 		
 		//Set position
 		xPosition = this.gameObject.transform.position;
@@ -67,7 +69,7 @@ public class Bird : MonoBehaviour {
 		anim = GetComponent<Animator>();
 
 		//Set bird
-		setBirdToNormal();
+		//setBirdToNormal();
 	}
 
 
@@ -99,10 +101,13 @@ public class Bird : MonoBehaviour {
 		//Transform angle when bird is falling down & is flappying
 		float rotation = 0;
 		if(speed.y >= 0){
-			rotation = Mathf.Lerp (0, 40, speed.y / maxSpeed);
+			rotation = Mathf.Lerp (0, 50, speed.y / 5.5f);
+			speed.y += 0.018f;
 		}
 		else{
-			rotation = Mathf.Lerp (0, -70, -speed.y / maxSpeed);
+			rotation = Mathf.Lerp (0, -75, -speed.y / 8.2f);
+			//Adding a falling force
+			speed.y -= 0.041f;
 		}
 		transform.rotation = Quaternion.Euler(0, 0, rotation);
 	}
@@ -181,7 +186,7 @@ public class Bird : MonoBehaviour {
 		//Changes mass value
 		vForce.y = -20;
 		vJump.y = 6;
-		maxSpeed = 20;
+		maxSpeedUp = maxSpeedDown = 20;
 	}
 
 
@@ -217,7 +222,7 @@ public class Bird : MonoBehaviour {
 			//Mass value
 			vForce.y = -14;
 			vJump.y = 5;
-			maxSpeed = 5;
+			maxSpeedUp = maxSpeedDown = 5;
 
 			StartCoroutine(powerUpTimer());
 		}
