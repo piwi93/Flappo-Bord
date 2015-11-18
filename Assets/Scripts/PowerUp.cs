@@ -29,6 +29,11 @@ public class PowerUp : MonoBehaviour {
 	//Scroll
 	private void scrollPowerup(){
         this.transform.position = this.transform.position + (vSpeed * Time.deltaTime);
+
+        //Out of camera position
+        if (this.transform.position.x <= -8.22f){
+			Destroy(gameObject);
+        }
     }
 
 
@@ -36,7 +41,7 @@ public class PowerUp : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D Collider){
 
 		//Play sfx
-		AudioSource.PlayClipAtPoint(sfx, new Vector3(-5, 1, 2));
+		AudioSource.PlayClipAtPoint(sfx, Camera.main.transform.position, 0.2f);
 
 		//Destroy powerup
 		if(Collider.gameObject.name == "Bird"){

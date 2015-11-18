@@ -12,6 +12,14 @@ public class Respawn : MonoBehaviour {
 	int respawnAux;
 	int powerAux;
 
+	bool powerIsAvailable = true;
+
+	//
+	IEnumerator AvailablePowerUp(){
+		yield return new WaitForSeconds(10F);
+		powerIsAvailable = true;
+	}
+
 	//Update more slow than normal
 	void FixedUpdate(){
 
@@ -19,21 +27,24 @@ public class Respawn : MonoBehaviour {
 		powerAux = Random.Range(0, 10);
 
 		if(Time.time > tiempo){
-			if((respawnAux > 45) && (powerAux <= 5)){
+			
+			if((respawnAux > 45) && (powerAux <= 4) && (powerIsAvailable)){
 				Instantiate(unstopable, transform.position, transform.rotation);
+				powerIsAvailable = false;
+				StartCoroutine(AvailablePowerUp());
 			}
-			else if((respawnAux > 45) && (powerAux >= 6)){
+			
+			else if((respawnAux > 45) && (powerAux >= 5) && (powerIsAvailable)){
 				Instantiate(tiny, transform.position, transform.rotation);
+				powerIsAvailable = false;
+				StartCoroutine(AvailablePowerUp());
 			}
+			
 			else{
 				Instantiate(tube, transform.position, transform.rotation);
 			}
+			
 			tiempo = Time.time + speed;
-		}
-
-		//Out of camera position
-		if (this.transform.position.x <= -8.22f){
-			Destroy(gameObject);
 		}
 	}
 }

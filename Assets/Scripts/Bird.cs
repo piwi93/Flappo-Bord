@@ -23,6 +23,7 @@ public class Bird : MonoBehaviour {
 	AudioSource peow;
 	AudioSource pipe;
 	AudioSource boup;
+	AudioSource rockpush;
 	Animator anim;
 
 
@@ -65,6 +66,7 @@ public class Bird : MonoBehaviour {
 	    peow = allMyAudioSources[1];
 		pipe = allMyAudioSources[2];
 		boup = allMyAudioSources[3];
+		rockpush = allMyAudioSources[4];
 
 		anim = GetComponent<Animator>();
 
@@ -90,7 +92,7 @@ public class Bird : MonoBehaviour {
 	//Update more slow than normal
 	void FixedUpdate(){
 
-		//Bird movement
+		//Bird physics and movement
 		speed += vForce * Time.deltaTime;
 		if(flap == true){
 			flap = false;
@@ -101,13 +103,13 @@ public class Bird : MonoBehaviour {
 		//Transform angle when bird is falling down & is flappying
 		float rotation = 0;
 		if(speed.y >= 0){
-			rotation = Mathf.Lerp (0, 50, speed.y / 5.5f);
+			rotation = Mathf.Lerp (0, 50, speed.y / maxSpeedUp);
 			speed.y += 0.018f;
 		}
 		else{
-			rotation = Mathf.Lerp (0, -75, -speed.y / 8.2f);
+			rotation = Mathf.Lerp (0, -75, -speed.y / maxSpeedDown);
 			//Adding a falling force
-			speed.y -= 0.041f;
+			speed.y -= 0.045f;
 		}
 		transform.rotation = Quaternion.Euler(0, 0, rotation);
 	}
@@ -138,15 +140,22 @@ public class Bird : MonoBehaviour {
 			Application.LoadLevel(Application.loadedLevel);
 		}
 
-		//Else: Im unstopable bitch, but better if I dont collide with the ground 
 		else{
-			//peow sound
-			peow.Play();
 
+			//Im unstopable bitch, but better if I dont collide with the ground
 			if(Collission.gameObject.name == "Ground"){
 
-				//Restart Current Scene (Pause?)
-				Application.LoadLevel(Application.loadedLevel);
+				//rockpush sound
+				rockpush.Play();
+
+				//flying near the ground
+				Vector3 falling = new Vector3(0,3.0F,0);
+				speed.y = falling.y;
+			}
+
+			else{
+				//peow sound
+				peow.Play();
 			}
 		}
 
@@ -186,7 +195,8 @@ public class Bird : MonoBehaviour {
 		//Changes mass value
 		vForce.y = -20;
 		vJump.y = 6;
-		maxSpeedUp = maxSpeedDown = 20;
+		maxSpeedUp = 8;
+		maxSpeedDown = 18;
 	}
 
 
@@ -222,7 +232,8 @@ public class Bird : MonoBehaviour {
 			//Mass value
 			vForce.y = -14;
 			vJump.y = 5;
-			maxSpeedUp = maxSpeedDown = 5;
+			maxSpeedUp = 10;
+			maxSpeedDown = 10;
 
 			StartCoroutine(powerUpTimer());
 		}
