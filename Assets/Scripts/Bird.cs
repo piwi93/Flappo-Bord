@@ -6,6 +6,7 @@ public class Bird : MonoBehaviour {
 	Vector3 speed = Vector3.zero;
 	Vector3 vForce;
 	Vector3 vJump;
+	Score gameScore;
 
 	public float force;
 	public float jump;
@@ -136,8 +137,13 @@ public class Bird : MonoBehaviour {
 			//peow sound
 			peow.Play();
 
+			//reset game score
+			gameScore = GameObject.Find("Score").GetComponent<Score>();
+			gameScore.resetScore();
+
 			//Restart Current Scene (Pause?)
 			Application.LoadLevel(Application.loadedLevel);
+			//Time.timeScale = 0.0f;
 		}
 
 		else{

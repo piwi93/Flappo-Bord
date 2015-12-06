@@ -4,6 +4,7 @@ using System.Collections;
 public class Respawn : MonoBehaviour {
 
 	public Transform tube;
+	public Transform angryBord;
 	public Transform unstopable;
 	public Transform tiny;
 	public float speed;
@@ -39,7 +40,9 @@ public class Respawn : MonoBehaviour {
 				powerIsAvailable = false;
 				StartCoroutine(AvailablePowerUp());
 			}
-			
+			else if((respawnAux <= 45) && (respawnAux >= 35)){
+				Instantiate(angryBord, transform.position, transform.rotation);
+			}
 			else{
 				Instantiate(tube, transform.position, transform.rotation);
 			}

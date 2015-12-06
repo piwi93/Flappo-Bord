@@ -3,17 +3,22 @@ using System.Collections;
 
 public class Tubes : MonoBehaviour {
 
+	public float speed;
+
     Vector3 vSpeed;
     bool hasPlayed = false;
-
-    public float speed;
+	Score gameScore;
 
 
 	// Use this for initialization
 	void Start(){
-		vSpeed.x = speed;
 
+		//Set variables
+		vSpeed.x = speed;
 		hasPlayed = false;
+
+		//Set gameScore functions
+		gameScore = GameObject.Find("Score").GetComponent<Score>();
 
 		//Set a random range of 'y' for respawn
 		Vector3 newRespawn = this.transform.position;
@@ -38,10 +43,15 @@ public class Tubes : MonoBehaviour {
 			Destroy(gameObject);
         }
 
-        //Play audio
+        //Bird position
 		if( (this.transform.position.x <= -5f) && (hasPlayed == false) ){
+
+			//Play audio
 			GetComponent<AudioSource>().Play();
 			hasPlayed = true;
+
+			//Set game score +1
+			gameScore.addOne();
         }
 
     }
@@ -49,7 +59,13 @@ public class Tubes : MonoBehaviour {
 
 	//Destroy tube anim
 	IEnumerator detroyTube(){
+
 		GetComponent<Animation>().Play("TubesGone");
+
+		//Set game score +1
+		gameScore.addOne();
+
+		//Wait for destroy
 		yield return new WaitForSeconds(1F);
 		Destroy(gameObject);
 	}
