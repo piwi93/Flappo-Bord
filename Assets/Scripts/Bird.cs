@@ -12,9 +12,11 @@ public class Bird : MonoBehaviour {
 	public float jump;
 	public float maxSpeedUp;
 	public float maxSpeedDown;
+	[HideInInspector]
 	public string birdState;
 
-	bool flap = false;
+	[HideInInspector]
+	public bool flap = false;
 	bool hasPlayed = false;
 
 	string[] states = {"normal", "unstopable", "tiny", "rlauncher"};
@@ -82,9 +84,6 @@ public class Bird : MonoBehaviour {
 		
 		if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)){
             flap = true;
-
-            //bloob sound
-            bloob.Play();
         }
 	
 	}
@@ -98,6 +97,9 @@ public class Bird : MonoBehaviour {
 		if(flap == true){
 			flap = false;
 			speed.y = vJump.y;
+
+			//bloob sound
+			bloob.Play();
 		}
 		transform.position += speed * Time.deltaTime;
 

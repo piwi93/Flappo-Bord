@@ -15,7 +15,7 @@ public class Respawn : MonoBehaviour {
 
 	bool powerIsAvailable = true;
 
-	//
+	//Timer for powerups
 	IEnumerator AvailablePowerUp(){
 		yield return new WaitForSeconds(10F);
 		powerIsAvailable = true;
